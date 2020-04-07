@@ -326,7 +326,7 @@ static void particle_calculate_parent_mcol(ParticleSystem *psys,
     return;
   }
   const int emit_from = psmd->psys->part->from;
-  if (!ELEM(emit_from, PART_FROM_FACE, PART_FROM_VOLUME)) {
+  if (!ELEM(emit_from, PART_FROM_FACE, PART_FROM_VOLUME, PART_FROM_SPHERE)) {
     return;
   }
   ParticleData *particle = &psys->particles[parent_index];

@@ -204,8 +204,9 @@ typedef struct EffectorWeights {
 #define BPHYS_DATA_SIZE 5
 #define BPHYS_DATA_TIMES 6
 #define BPHYS_DATA_BOIDS 7
+#define BPHYS_DATA_DATA 8
 
-#define BPHYS_TOT_DATA 8
+#define BPHYS_TOT_DATA 9
 
 #define BPHYS_EXTRA_FLUID_SPRINGS 1
 
@@ -221,9 +222,9 @@ typedef struct PTCacheMem {
   unsigned int data_types, flag;
 
   /** BPHYS_TOT_DATA. */
-  void *data[8];
+  void *data[9];
   /** BPHYS_TOT_DATA. */
-  void *cur[8];
+  void *cur[9];
 
   struct ListBase extradata;
 } PTCacheMem;

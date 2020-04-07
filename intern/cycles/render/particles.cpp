@@ -86,6 +86,7 @@ void ParticleSystemManager::device_update_particles(Device *,
       kparticles[i].location = float3_to_float4(pa.location);
       kparticles[i].velocity = float3_to_float4(pa.velocity);
       kparticles[i].angular_velocity = float3_to_float4(pa.angular_velocity);
+      kparticles[i].data = pa.data;
 
       i++;
 

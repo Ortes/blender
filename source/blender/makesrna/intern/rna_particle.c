@@ -55,6 +55,7 @@ static const EnumPropertyItem part_from_items[] = {
     {PART_FROM_VERT, "VERT", 0, "Verts", ""},
     {PART_FROM_FACE, "FACE", 0, "Faces", ""},
     {PART_FROM_VOLUME, "VOLUME", 0, "Volume", ""},
+    {PART_FROM_SPHERE, "SPHERE", 0, "Sphere", ""},
     {0, NULL, 0, NULL, NULL},
 };
 #endif
@@ -64,6 +65,7 @@ static const EnumPropertyItem part_reactor_from_items[] = {
     {PART_FROM_VERT, "VERT", 0, "Verts", ""},
     {PART_FROM_FACE, "FACE", 0, "Faces", ""},
     {PART_FROM_VOLUME, "VOLUME", 0, "Volume", ""},
+    {PART_FROM_SPHERE, "SPHERE", 0, "Sphere", ""},
     {0, NULL, 0, NULL, NULL},
 };
 #endif
@@ -1679,6 +1681,9 @@ static void rna_def_particle_key(BlenderRNA *brna)
 
   prop = RNA_def_property(srna, "time", PROP_FLOAT, PROP_UNSIGNED);
   RNA_def_property_ui_text(prop, "Time", "Time of key over the simulation");
+
+  prop = RNA_def_property(srna, "data", PROP_FLOAT, PROP_UNSIGNED);
+  RNA_def_property_ui_text(prop, "Data", "Key custom data");
 }
 
 static void rna_def_child_particle(BlenderRNA *brna)
@@ -1784,6 +1789,10 @@ static void rna_def_particle(BlenderRNA *brna)
   prop = RNA_def_property(srna, "size", PROP_FLOAT, PROP_NONE);
   /*  RNA_def_property_range(prop, lowerLimitf, upperLimitf); */
   RNA_def_property_ui_text(prop, "Size", "");
+
+  prop = RNA_def_property(srna, "data", PROP_FLOAT, PROP_NONE);
+  RNA_def_property_float_sdna(prop, NULL, "state.data");
+  RNA_def_property_ui_text(prop, "Data", "");
 
   /* */
   /*  int num;                 */ /* index to vert/edge/face */
@@ -2306,6 +2315,7 @@ static void rna_def_particle_settings(BlenderRNA *brna)
       {PART_PHYS_KEYED, "KEYED", 0, "Keyed", ""},
       {PART_PHYS_BOIDS, "BOIDS", 0, "Boids", ""},
       {PART_PHYS_FLUID, "FLUID", 0, "Fluid", ""},
+      {PART_PHYS_CUSTOM, "CUSTOM", 0, "Custom", ""},
       {0, NULL, 0, NULL, NULL},
   };
 

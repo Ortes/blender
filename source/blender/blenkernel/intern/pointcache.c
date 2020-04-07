@@ -132,6 +132,7 @@ static int ptcache_data_size[] = {
     sizeof(float),         // BPHYS_DATA_SIZE
     3 * sizeof(float),     // BPHYS_DATA_TIMES
     sizeof(BoidData),      // case BPHYS_DATA_BOIDS
+    sizeof(float),     // BPHYS_DATA_DATA
 };
 
 static int ptcache_extra_datasize[] = {
@@ -251,6 +252,7 @@ void BKE_ptcache_make_particle_key(ParticleKey *key, int index, void **data, flo
 {
   PTCACHE_DATA_TO(data, BPHYS_DATA_LOCATION, index, key->co);
   PTCACHE_DATA_TO(data, BPHYS_DATA_VELOCITY, index, key->vel);
+  PTCACHE_DATA_TO(data, BPHYS_DATA_DATA, index, &key->data);
 
   /* no rotation info, so make something nice up */
   if (data[BPHYS_DATA_ROTATION] == NULL) {
@@ -287,6 +289,7 @@ static int ptcache_particle_write(int index, void *psys_v, void **data, int cfra
   PTCACHE_DATA_FROM(data, BPHYS_DATA_AVELOCITY, pa->state.ave);
   PTCACHE_DATA_FROM(data, BPHYS_DATA_SIZE, &pa->size);
   PTCACHE_DATA_FROM(data, BPHYS_DATA_TIMES, times);
+  PTCACHE_DATA_FROM(data, BPHYS_DATA_DATA, &(pa->state.data));
 
   if (boid) {
     PTCACHE_DATA_FROM(data, BPHYS_DATA_BOIDS, &boid->data);
@@ -1631,7 +1634,10 @@ void BKE_ptcache_id_from_particles(PTCacheID *pid, Object *ob, ParticleSystem *p
   pid->data_types = (1 << BPHYS_DATA_LOCATION) | (1 << BPHYS_DATA_VELOCITY) |
                     (1 << BPHYS_DATA_INDEX);
 
-  if (psys->part->phystype == PART_PHYS_BOIDS) {
+  if (psys->part->phystype == PART_PHYS_CUSTOM) {
+    pid->data_types |= 1 << BPHYS_DATA_DATA;
+  }
+  else if (psys->part->phystype == PART_PHYS_BOIDS) {
     pid->data_types |= (1 << BPHYS_DATA_AVELOCITY) | (1 << BPHYS_DATA_ROTATION) |
                        (1 << BPHYS_DATA_BOIDS);
   }

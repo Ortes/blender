@@ -77,6 +77,7 @@ bool BlenderSync::sync_dupli_particle(BL::Object &b_ob,
   pa.size = b_pa.size();
   pa.velocity = get_float3(b_pa.velocity());
   pa.angular_velocity = get_float3(b_pa.angular_velocity());
+  pa.data = b_pa.data();
 
   psys->particles.push_back_slow(pa);
 

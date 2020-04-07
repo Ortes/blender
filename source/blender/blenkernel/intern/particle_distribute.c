@@ -682,6 +682,35 @@ static void distribute_from_volume_exec(ParticleTask *thread, ParticleData *pa, 
   }
 }
 
+static void distribute_from_sphere_exec(ParticleTask *thread, ParticleData *pa, int p)
+{
+  ParticleThreadContext *ctx = thread->ctx;
+  MFace *mface;
+
+  mface = ctx->mesh->mface;
+
+  int rng_skip_tot = PSYS_RND_DIST_SKIP; /* count how many rng_* calls wont need skipping */
+
+  /* TODO_PARTICLE - use original index */
+  pa->num = ctx->index[p];
+
+
+  float r = pow(BLI_rng_get_float(thread->rng), 1. / 3.);
+  float theta = acos(BLI_rng_get_float(thread->rng) * 2. - 1.);
+  float phi = BLI_rng_get_float(thread->rng) * 2. * M_PI;
+  rng_skip_tot -= 3;
+
+  pa->fuv[0] = r * sin(theta) * cos(phi);
+  pa->fuv[1] = r * sin(theta) * sin(phi);
+  pa->fuv[2] = r * cos(theta);
+
+  BLI_assert(rng_skip_tot >= 0); /* should never be below zero */
+  if (rng_skip_tot > 0) {
+    BLI_rng_skip(thread->rng, rng_skip_tot);
+  }
+}
+
+
 static void distribute_children_exec(ParticleTask *thread, ChildParticle *cpa, int p)
 {
   ParticleThreadContext *ctx = thread->ctx;
@@ -799,6 +828,11 @@ static void exec_distribute_parent(TaskPool *__restrict UNUSED(pool),
     case PART_FROM_VERT:
       for (p = task->begin; p < task->end; p++, pa++) {
         distribute_from_verts_exec(task, pa, p);
+      }
+      break;
+    case PART_FROM_SPHERE:
+      for (p = task->begin; p < task->end; p++, pa++) {
+        distribute_from_sphere_exec(task, pa, p);
       }
       break;
   }

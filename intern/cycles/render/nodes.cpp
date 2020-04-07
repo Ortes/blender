@@ -4136,6 +4136,7 @@ NODE_DEFINE(ParticleInfoNode)
   SOCKET_OUT_FLOAT(size, "Size");
   SOCKET_OUT_VECTOR(velocity, "Velocity");
   SOCKET_OUT_VECTOR(angular_velocity, "Angular Velocity");
+  SOCKET_OUT_FLOAT(data, "Data");
 
   return type;
 }
@@ -4165,6 +4166,8 @@ void ParticleInfoNode::attributes(Shader *shader, AttributeRequestSet *attribute
   if (!output("Velocity")->links.empty())
     attributes->add(ATTR_STD_PARTICLE);
   if (!output("Angular Velocity")->links.empty())
+    attributes->add(ATTR_STD_PARTICLE);
+  if (!output("Data")->links.empty())
     attributes->add(ATTR_STD_PARTICLE);
 
   ShaderNode::attributes(shader, attributes);
@@ -4221,6 +4224,11 @@ void ParticleInfoNode::compile(SVMCompiler &compiler)
   if (!out->links.empty()) {
     compiler.add_node(
         NODE_PARTICLE_INFO, NODE_INFO_PAR_ANGULAR_VELOCITY, compiler.stack_assign(out));
+  }
+  out = output("Data");
+  if (!out->links.empty()) {
+    compiler.add_node(
+            NODE_PARTICLE_INFO, NODE_INFO_PAR_DATA, compiler.stack_assign(out));
   }
 }
 

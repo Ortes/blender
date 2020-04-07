@@ -38,6 +38,7 @@ struct Particle {
   float size;
   float3 velocity;
   float3 angular_velocity;
+  float data;
 };
 
 class ParticleSystem {

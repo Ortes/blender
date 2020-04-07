@@ -54,6 +54,10 @@ typedef struct ParticleKey { /* when changed update size of struct to copy_parti
   float ave[3];
   /** When this key happens. */
   float time;
+  /** Key custom data */
+  float data;
+  /** Padding */
+  int _pad;
 } ParticleKey;
 
 typedef struct BoidParticle {
@@ -511,6 +515,7 @@ enum {
 #define PART_FROM_VOLUME 2
 /* #define PART_FROM_PARTICLE   3  deprecated! */
 #define PART_FROM_CHILD 4
+#define PART_FROM_SPHERE 5
 
 /* part->distr */
 #define PART_DISTR_JIT 0
@@ -523,6 +528,7 @@ enum {
 #define PART_PHYS_KEYED 2
 #define PART_PHYS_BOIDS 3
 #define PART_PHYS_FLUID 4
+#define PART_PHYS_CUSTOM 5
 
 /* part->kink */
 typedef enum eParticleKink {

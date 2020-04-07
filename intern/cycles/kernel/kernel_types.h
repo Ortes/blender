@@ -1539,6 +1539,8 @@ typedef struct KernelParticle {
   float4 location;
   float4 velocity;
   float4 angular_velocity;
+  float data;
+  float _pad[3];
 } KernelParticle;
 static_assert_align(KernelParticle, 16);
 

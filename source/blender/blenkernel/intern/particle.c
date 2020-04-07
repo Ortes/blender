@@ -1942,6 +1942,10 @@ void psys_particle_on_emitter(ParticleSystemModifierData *psmd,
                               float vtan[3],
                               float orco[3])
 {
+  if (psmd->psys->part->from == PART_FROM_SPHERE) {
+    copy_v3_v3(vec, fuv);
+    return;
+  }
   if (psmd && psmd->mesh_final) {
     if (psmd->psys->part->distr == PART_DISTR_GRID && psmd->psys->part->from != PART_FROM_VERT) {
       if (vec) {
@@ -3971,7 +3975,7 @@ static void get_cpa_texture(Mesh *mesh,
       short texco = mtex->texco;
 
       if (ELEM(texco, TEXCO_UV, TEXCO_ORCO) &&
-          (ELEM(part->from, PART_FROM_FACE, PART_FROM_VOLUME) == 0 ||
+          (ELEM(part->from, PART_FROM_FACE, PART_FROM_VOLUME, PART_FROM_SPHERE) == 0 ||
            part->distr == PART_DISTR_GRID)) {
         texco = TEXCO_GLOB;
       }
@@ -4059,7 +4063,7 @@ void psys_get_texture(
       short blend = mtex->blendtype;
       short texco = mtex->texco;
 
-      if (texco == TEXCO_UV && (ELEM(part->from, PART_FROM_FACE, PART_FROM_VOLUME) == 0 ||
+      if (texco == TEXCO_UV && (ELEM(part->from, PART_FROM_FACE, PART_FROM_VOLUME, PART_FROM_SPHERE) == 0 ||
                                 part->distr == PART_DISTR_GRID)) {
         texco = TEXCO_GLOB;
       }

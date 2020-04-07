@@ -107,7 +107,7 @@ static int particles_are_dynamic(ParticleSystem *psys)
     return psys->flag & PSYS_HAIR_DYNAMICS;
   }
   else {
-    return ELEM(psys->part->phystype, PART_PHYS_NEWTON, PART_PHYS_BOIDS, PART_PHYS_FLUID);
+    return ELEM(psys->part->phystype, PART_PHYS_NEWTON, PART_PHYS_BOIDS, PART_PHYS_FLUID, PART_PHYS_CUSTOM);
   }
 }
 
@@ -4045,6 +4045,13 @@ static void dynamics_step(ParticleSimulationData *sim, float cfra)
       BLI_spin_end(&task_data.spin);
 
       psys_sph_finalise(&sphdata);
+      break;
+    }
+    case PART_PHYS_CUSTOM: {
+      LOOP_DYNAMIC_PARTICLES
+        {
+          pa->state.data = cfra * psys_get_timestep(sim) * .1;
+        }
       break;
     }
   }

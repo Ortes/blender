@@ -194,6 +194,11 @@ ccl_device void svm_node_particle_info(
       stack_store_float3(stack, out_offset, particle_angular_velocity(kg, particle_id));
       break;
     }
+    case NODE_INFO_PAR_DATA: {
+      int particle_id = object_particle_id(kg, sd->object);
+      stack_store_float(stack, out_offset, particle_data(kg, particle_id));
+      break;
+    }
   }
 }
 

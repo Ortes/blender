@@ -3,6 +3,13 @@
    linking to external resources instead of including content in-line.
    See 'release/text/readme.html' for the end user read-me.
 
+Blender Fork
+------------
+
+This is a fork of Blender project described below with addition of:
+
+- Particles spherical homogeneous distribution
+- Custom physics simulation system together with custom data available in Particles Info node in the Shader node system
 
 Blender
 =======

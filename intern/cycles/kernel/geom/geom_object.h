@@ -407,6 +407,11 @@ ccl_device float3 particle_angular_velocity(KernelGlobals *kg, int particle)
   return float4_to_float3(kernel_tex_fetch(__particles, particle).angular_velocity);
 }
 
+ccl_device float particle_data(KernelGlobals *kg, int particle)
+{
+  return kernel_tex_fetch(__particles, particle).data;
+}
+
 /* Object intersection in BVH */
 
 ccl_device_inline float3 bvh_clamp_direction(float3 dir)
