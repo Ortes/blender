@@ -4050,7 +4050,13 @@ static void dynamics_step(ParticleSimulationData *sim, float cfra)
     case PART_PHYS_CUSTOM: {
       LOOP_DYNAMIC_PARTICLES
         {
-          pa->state.data = cfra * psys_get_timestep(sim) * .1;
+          reset_particle(sim, pa, dtime, cfra);
+          float time = cfra * psys_get_timestep(sim);
+          float magnitude = pa->state.co[1];
+          float x = fmod(fmod(-magnitude + time, 8) + 8, 8);
+          float displace = x * exp(-x);
+          pa->state.co[2] += displace / 2;
+          pa->state.data = displace / exp(-1);
         }
       break;
     }
