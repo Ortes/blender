@@ -4052,9 +4052,21 @@ static void dynamics_step(ParticleSimulationData *sim, float cfra)
         {
           reset_particle(sim, pa, dtime, cfra);
           float time = cfra * psys_get_timestep(sim);
-          float magnitude = sin(pa->state.co[0] * 8 + time);
-          pa->state.co[0] += magnitude / 8;
-          pa->state.data = magnitude / 2. + 1.;
+          float scale = (sin(time / 2.) / 2. + .5) * 10. + .5;
+          pa->state.co[0] *= scale;
+          pa->state.co[2] *= scale;
+          float delta[3];
+          delta[0] = round(pa->state.co[0]);
+          delta[1] = pa->state.co[1];
+          delta[2] = round(pa->state.co[2]);
+          sub_v3_v3v3(delta, pa->state.co, delta);
+          float factor = sin(pa->state.co[1] * 2 + time * 6) / 2. + .5;
+          delta[0] *= factor;
+          delta[2] *= factor;
+          sub_v3_v3(pa->state.co, delta);
+          pa->state.co[0] /= scale;
+          pa->state.co[2] /= scale;
+          pa->state.data = factor;
         }
       break;
     }
