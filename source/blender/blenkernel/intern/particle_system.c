@@ -4052,11 +4052,9 @@ static void dynamics_step(ParticleSimulationData *sim, float cfra)
         {
           reset_particle(sim, pa, dtime, cfra);
           float time = cfra * psys_get_timestep(sim);
-          float magnitude = pa->state.co[1];
-          float x = fmod(fmod(-magnitude + time, 8) + 8, 8);
-          float displace = x * exp(-x);
-          pa->state.co[2] += displace / 2;
-          pa->state.data = displace / exp(-1);
+          float magnitude = sin(pa->state.co[0] * 8 + time);
+          pa->state.co[0] += magnitude / 8;
+          pa->state.data = magnitude / 2. + 1.;
         }
       break;
     }
